@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>India Live Market Prices</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#120b00,#2b1700,#4d3200,#120b00);
+color:white;
+overflow-x:hidden;
+}
+
+/* Background */
+
+.bg{
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at top right,#ffd70055,transparent 25%),
+radial-gradient(circle at bottom left,#ff990044,transparent 25%),
+radial-gradient(circle at center,#ffcc0033,transparent 35%),
+linear-gradient(135deg,#120b00,#2b1700,#4d3200,#120b00);
+z-index:-1;
+animation:bgmove 8s infinite alternate;
+}
+
+@keyframes bgmove{
+0%{
+filter:hue-rotate(0deg);
+}
+100%{
+filter:hue-rotate(10deg);
+}
+}
+
+/* Navbar */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+backdrop-filter:blur(10px);
+background:rgba(255,215,0,0.06);
+border-bottom:1px solid rgba(255,215,0,0.15);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:28px;
+font-weight:700;
+color:#ffcc00;
+text-shadow:0 0 20px #ffcc00;
+}
+
+nav ul{
+display:flex;
+gap:30px;
+list-style:none;
+}
+
+nav ul li{
+cursor:pointer;
+transition:0.3s;
+}
+
+nav ul li:hover{
+color:#ffcc00;
+}
+
+/* Menu Button */
+
+.menu-btn{
+display:none;
+font-size:30px;
+cursor:pointer;
+color:#ffcc00;
+}
+
+/* Hero */
+
+.hero{
+height:90vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+padding:20px;
+}
+
+.hero h1{
+font-size:65px;
+max-width:1000px;
+line-height:1.2;
+background:linear-gradient(to right,#fff,#ffd700);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.hero p{
+margin-top:20px;
+font-size:20px;
+color:#f5deb3;
+max-width:700px;
+}
+
+.btn{
+margin-top:35px;
+padding:16px 40px;
+border:none;
+border-radius:50px;
+background:linear-gradient(45deg,#ffd700,#ff8800);
+color:black;
+font-size:18px;
+font-weight:600;
+cursor:pointer;
+transition:0.4s;
+box-shadow:0 0 25px #ffb30088;
+}
+
+.btn:hover{
+transform:translateY(-5px) scale(1.03);
+}
+
+/* Cards */
+
+.section-title{
+text-align:center;
+font-size:40px;
+margin:80px 0 40px;
+color:#ffd700;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+padding:0 8% 80px;
+}
+
+.card{
+background:rgba(255,215,0,0.08);
+border:1px solid rgba(255,215,0,0.15);
+border-radius:25px;
+padding:30px;
+backdrop-filter:blur(14px);
+transition:0.4s;
+position:relative;
+overflow:hidden;
+box-shadow:0 0 20px rgba(255,215,0,0.08);
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.02);
+box-shadow:0 0 40px rgba(255,215,0,0.35);
+}
+
+.card::before{
+content:'';
+position:absolute;
+width:150px;
+height:150px;
+background:rgba(255,215,0,0.15);
+border-radius:50%;
+top:-50px;
+right:-50px;
+}
+
+.card h2{
+font-size:24px;
+margin-bottom:10px;
+}
+
+.price{
+font-size:30px;
+font-weight:700;
+color:#00ffae;
+}
+
+.change{
+margin-top:10px;
+color:#ffd700;
+}
+
+/* Chart Section */
+
+.chart-section{
+padding:0 8% 80px;
+}
+
+.chart{
+height:350px;
+border-radius:30px;
+background:rgba(255,215,0,0.08);
+border:1px solid rgba(255,215,0,0.2);
+display:flex;
+justify-content:center;
+align-items:flex-end;
+gap:12px;
+padding:30px;
+overflow:hidden;
+}
+
+.bar{
+width:35px;
+background:linear-gradient(to top,#ff9900,#ffd700,#fff0a0);
+border-radius:20px 20px 0 0;
+animation:livechart 2s infinite ease-in-out;
+box-shadow:0 0 15px #ffd700;
+}
+
+.bar:nth-child(1){height:120px;}
+.bar:nth-child(2){height:180px;animation-delay:0.2s;}
+.bar:nth-child(3){height:140px;animation-delay:0.4s;}
+.bar:nth-child(4){height:250px;animation-delay:0.6s;}
+.bar:nth-child(5){height:170px;animation-delay:0.8s;}
+.bar:nth-child(6){height:220px;animation-delay:1s;}
+.bar:nth-child(7){height:150px;animation-delay:1.2s;}
+.bar:nth-child(8){height:280px;animation-delay:1.4s;}
+
+@keyframes livechart{
+0%{
+transform:scaleY(1);
+}
+50%{
+transform:scaleY(1.25);
+}
+100%{
+transform:scaleY(1);
+}
+}
+
+/* WhatsApp Button */
+
+.whatsapp{
+position:fixed;
+right:20px;
+bottom:20px;
+width:70px;
+height:70px;
+background:#25d366;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+text-decoration:none;
+font-size:38px;
+color:white;
+box-shadow:0 0 25px rgba(37,211,102,0.7);
+z-index:999;
+transition:0.3s;
+animation:whatsappGlow 2s infinite;
+}
+
+.whatsapp:hover{
+transform:scale(1.12);
+}
+
+@keyframes whatsappGlow{
+0%{
+box-shadow:0 0 10px #25d366;
+}
+50%{
+box-shadow:0 0 35px #25d366;
+}
+100%{
+box-shadow:0 0 10px #25d366;
+}
+}
+
+/* Footer */
+
+footer{
+padding:40px;
+text-align:center;
+background:#1a1200;
+border-top:1px solid rgba(255,215,0,0.15);
+color:#d4af37;
+}
+
+/* Floating Animation */
+
+.float{
+animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+100%{transform:translateY(0);}
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+nav ul{
+display:none;
+flex-direction:column;
+position:absolute;
+top:80px;
+right:20px;
+background:#2b1700;
+padding:20px;
+border-radius:15px;
+}
+
+nav ul.active{
+display:flex;
+}
+
+.menu-btn{
+display:block;
+}
+
+.section-title{
+font-size:32px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<!-- Navbar -->
+
+<nav>
+
+<div class="logo">INDIA MARKET LIVE</div>
+
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+<ul id="menu">
+<li>Home</li>
+<li>Gold</li>
+<li>Silver</li>
+<li>Mandi</li>
+<li>Charts</li>
+<li>Contact</li>
+</ul>
+
+</nav>
+
+<!-- Hero -->
+
+<section class="hero">
+
+<h1 class="float">
+India Live Commodity & Food Prices
+</h1>
+
+<p>
+Track live Gold, Silver, Wheat, Sugar, Rice, Oil and all India market prices with premium real-time updates.
+</p>
+
+<button class="btn">
+View Live Prices
+</button>
+
+</section>
+
+<!-- Market Cards -->
+
+<h2 class="section-title">
+Live Market Prices
+</h2>
+
+<section class="cards">
+
+<div class="card">
+<h2>🥇 Gold</h2>
+<div class="price" id="gold">₹ 92,450 /10g</div>
+<div class="change">▲ +1.8%</div>
+</div>
+
+<div class="card">
+<h2>🥈 Silver</h2>
+<div class="price" id="silver">₹ 1,04,200 /kg</div>
+<div class="change">▲ +0.9%</div>
+</div>
+
+<div class="card">
+<h2>🌾 Wheat</h2>
+<div class="price" id="wheat">₹ 2,540 /q</div>
+<div class="change">▼ -0.4%</div>
+</div>
+
+<div class="card">
+<h2>🍚 Rice</h2>
+<div class="price" id="rice">₹ 52 /kg</div>
+<div class="change">▲ +0.5%</div>
+</div>
+
+<div class="card">
+<h2>🍬 Sugar</h2>
+<div class="price" id="sugar">₹ 44 /kg</div>
+<div class="change">▲ +0.2%</div>
+</div>
+
+<div class="card">
+<h2>🛢 Mustard Oil</h2>
+<div class="price" id="oil">₹ 168 /L</div>
+<div class="change">▼ -0.7%</div>
+</div>
+
+<div class="card">
+<h2>🧄 Garlic</h2>
+<div class="price" id="garlic">₹ 220 /kg</div>
+<div class="change">▲ +1.1%</div>
+</div>
+
+<div class="card">
+<h2>🫓 Flour (Maida)</h2>
+<div class="price" id="maida">₹ 48 /kg</div>
+<div class="change">▲ +0.3%</div>
+</div>
+
+<div class="card">
+<h2>🥛 Ghee</h2>
+<div class="price" id="ghee">₹ 640 /kg</div>
+<div class="change">▲ +0.8%</div>
+</div>
+
+<div class="card">
+<h2>🫘 Arhar Dal</h2>
+<div class="price" id="dal">₹ 145 /kg</div>
+<div class="change">▲ +1.2%</div>
+</div>
+
+<div class="card">
+<h2>🌶 Red Chilli</h2>
+<div class="price" id="mirch">₹ 280 /kg</div>
+<div class="change">▲ +2.1%</div>
+</div>
+
+<div class="card">
+<h2>🌿 Jeera</h2>
+<div class="price" id="jeera">₹ 420 /kg</div>
+<div class="change">▼ -0.5%</div>
+</div>
+
+<div class="card">
+<h2>🌱 Methi</h2>
+<div class="price" id="methi">₹ 120 /kg</div>
+<div class="change">▲ +0.4%</div>
+</div>
+
+<div class="card">
+<h2>🍃 Tej Patta</h2>
+<div class="price" id="tej">₹ 95 /100g</div>
+<div class="change">▲ +0.6%</div>
+</div>
+
+<div class="card">
+<h2>🟡 Haldi</h2>
+<div class="price" id="haldi">₹ 180 /kg</div>
+<div class="change">▲ +0.9%</div>
+</div>
+
+<div class="card">
+<h2>🟢 Green Peas</h2>
+<div class="price" id="matar">₹ 75 /kg</div>
+<div class="change">▼ -0.2%</div>
+</div>
+
+<div class="card">
+<h2>🌾 Sarso</h2>
+<div class="price" id="sarso">₹ 6,100 /q</div>
+<div class="change">▲ +0.5%</div>
+</div>
+
+<div class="card">
+<h2>🔥 Gas Cylinder</h2>
+<div class="price" id="gas">₹ 1,120 /unit</div>
+<div class="change">▲ +1.4%</div>
+</div>
+
+</section>
+
+<div class="card">
+<h2 style="font-size:24px;">🧂 Namak</h2>
+<div class="price" id="namak">₹ 24 /kg</div>
+<div class="change">▲ +0.2%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🌿 Dhaniya Powder</h2>
+<div class="price" id="dhaniya">₹ 180 /kg</div>
+<div class="change">▲ +0.6%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🍛 Garam Masala</h2>
+<div class="price" id="garam">₹ 320 /kg</div>
+<div class="change">▲ +0.8%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">✨ Hing</h2>
+<div class="price" id="hing">₹ 950 /100g</div>
+<div class="change">▲ +1.1%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🧅 Pyaj</h2>
+<div class="price" id="pyaj">₹ 38 /kg</div>
+<div class="change">▼ -0.4%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🍅 Tomato</h2>
+<div class="price" id="tomato">₹ 45 /kg</div>
+<div class="change">▲ +0.5%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🌶 Hari Mirch</h2>
+<div class="price" id="harimirch">₹ 70 /kg</div>
+<div class="change">▲ +0.9%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🌿 Hara Dhaniya</h2>
+<div class="price" id="haradhaniya">₹ 120 /kg</div>
+<div class="change">▲ +0.3%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🫓 Besan</h2>
+<div class="price" id="besan">₹ 85 /kg</div>
+<div class="change">▲ +0.7%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🥛 Doodh</h2>
+<div class="price" id="doodh">₹ 64 /L</div>
+<div class="change">▲ +0.4%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🥣 Dahi</h2>
+<div class="price" id="dahi">₹ 90 /kg</div>
+<div class="change">▲ +0.5%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🧀 Paneer</h2>
+<div class="price" id="paneer">₹ 360 /kg</div>
+<div class="change">▲ +1.0%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">💧 Water</h2>
+<div class="price" id="water">₹ 25 /20L</div>
+<div class="change">▲ +0.1%</div>
+</div>
+
+<div class="card">
+<h2 style="font-size:24px;">🍵 Tea Leaves</h2>
+<div class="price" id="tea">₹ 540 /kg</div>
+<div class="change">▲ +0.6%</div>
+</div>
+
+<!-- Chart -->
+
+<h2 class="section-title">
+Live Market Analytics
+</h2>
+
+<section class="chart-section">
+
+<div class="chart">
+
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+<div class="bar"></div>
+
+</div>
+
+</section>
+
+<!-- WhatsApp -->
+
+<a class="whatsapp" href="https://wa.me/918601089655" target="_blank">
+<i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Footer -->
+
+<footer>
+
+© 2026 India Market Live | Premium Commodity Tracking Platform
+
+</footer>
+
+<script>
+
+/* Mobile Menu */
+
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("active");
+}
+
+/* Fake Live Updates */
+
+function randomPrice(min,max){
+return Math.floor(Math.random()*(max-min)+min);
+}
+
+setInterval(()=>{
+
+document.getElementById('gold').innerHTML =
+"₹ " + randomPrice(91000,94000) + " /10g";
+
+document.getElementById('silver').innerHTML =
+"₹ " + randomPrice(100000,106000) + " /kg";
+
+document.getElementById('wheat').innerHTML =
+"₹ " + randomPrice(2400,2700) + " /q";
+
+document.getElementById('rice').innerHTML =
+"₹ " + randomPrice(45,65) + " /kg";
+
+document.getElementById('sugar').innerHTML =
+"₹ " + randomPrice(40,50) + " /kg";
+
+document.getElementById('oil').innerHTML =
+"₹ " + randomPrice(150,190) + " /L";
+
+document.getElementById('garlic').innerHTML =
+"₹ " + randomPrice(180,260) + " /kg";
+
+document.getElementById('maida').innerHTML =
+"₹ " + randomPrice(40,60) + " /kg";
+
+document.getElementById('ghee').innerHTML =
+"₹ " + randomPrice(600,750) + " /kg";
+
+document.getElementById('dal').innerHTML =
+"₹ " + randomPrice(120,170) + " /kg";
+
+document.getElementById('mirch').innerHTML =
+"₹ " + randomPrice(250,350) + " /kg";
+
+document.getElementById('jeera').innerHTML =
+"₹ " + randomPrice(350,500) + " /kg";
+
+document.getElementById('methi').innerHTML =
+"₹ " + randomPrice(100,150) + " /kg";
+
+document.getElementById('tej').innerHTML =
+"₹ " + randomPrice(80,120) + " /100g";
+
+document.getElementById('haldi').innerHTML =
+"₹ " + randomPrice(150,220) + " /kg";
+
+document.getElementById('matar').innerHTML =
+"₹ " + randomPrice(60,100) + " /kg";
+
+document.getElementById('sarso').innerHTML =
+"₹ " + randomPrice(5800,6500) + " /q";
+
+document.getElementById('gas').innerHTML =
+"₹ " + randomPrice(1000,1250) + " /unit";
+
+},3000);
+
+</script>
+
+</body>
+</html>
